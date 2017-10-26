@@ -1,7 +1,6 @@
 package be.vdab.training.domain;
 
 import be.vdab.training.enums.AddressType;
-import be.vdab.training.enums.Country;
 import be.vdab.training.utilities.DateUtility;
 
 import java.util.Date;
@@ -158,113 +157,5 @@ public class Employee extends Worker {
         }
         return true;
     }
-
-    private class Address extends DatabaseEntity {
-        public static final int BELGIUM_ZIP_LENGTH = 4;
-        public static final int NETHERLANDS_ZIP_LENGTH = 6;
-        private String street;
-        private String houseNo;
-        private String zip;
-        private String city;
-
-        public Address(String street, String houseNo, String zip, String city) {
-            this.street = street;
-            this.houseNo = houseNo;
-            // to invoke the setter of ZIP
-            this.setZip(zip);
-            this.city = city;
-        }
-
-        public String getStreet() {
-            return street;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public String getHouseNo() {
-            return houseNo;
-        }
-
-        public void setHouseNo(String houseNo) {
-            this.houseNo = houseNo;
-        }
-
-        public String getZip() {
-            return zip;
-        }
-
-        public void setZip(String zip) {
-            this.zip = zip;
-            if (Employee.this.getCountry() != null && zip != null) {
-                // TODO : to explain syntax of OuterClass.this
-                if (   Employee.this.getCountry() == Country.BELGIUM && zip.length() != BELGIUM_ZIP_LENGTH
-                    || Employee.this.getCountry() == Country.NETHERLANDS && zip.length() != NETHERLANDS_ZIP_LENGTH) {
-                    System.err.println("ZIP code has an invalid length. Expected length = "
-                            + (Employee.this.getCountry() == Country.BELGIUM ? BELGIUM_ZIP_LENGTH : NETHERLANDS_ZIP_LENGTH));
-                }
-            }
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        @Override
-        public String toString() {
-            return "Address{" +
-                    "street='" + street + '\'' +
-                    ", houseNo='" + houseNo + '\'' +
-                    ", zip='" + zip + '\'' +
-                    ", city='" + city + '\'' +
-                    "} " + super.toString();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (!(o instanceof Address)) {
-                return false;
-            }
-            if (!super.equals(o)) {
-                return false;
-            }
-
-            Address address = (Address) o;
-
-            if (!city.equals(address.city)) {
-                return false;
-            }
-            if (!houseNo.equals(address.houseNo)) {
-                return false;
-            }
-            if (!street.equals(address.street)) {
-                return false;
-            }
-            if (!zip.equals(address.zip)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + street.hashCode();
-            result = 31 * result + houseNo.hashCode();
-            result = 31 * result + zip.hashCode();
-            result = 31 * result + city.hashCode();
-            return result;
-        }
-    }
-
 
 }

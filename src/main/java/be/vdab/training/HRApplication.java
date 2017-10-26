@@ -36,6 +36,10 @@ public class HRApplication {
         employee1.withCountry(Country.BELGIUM);
         employee1.withSocialSecurityNumber("67.11.02-367.87");
 
+        Employee.Address address1 = employee1.new Address("street 1", "house no 1", "zip 1", "commune 1");
+        Employee.Address address2 = employee1.new Address("street 2", "house no 2", "2650", "Edegem");
+        Employee.Address address3 = employee1.new Address("street 2", "house no 2", "2650", "Edegem");
+
         // TODO : to emphasize usage of placeholders
         LOGGER.info("testje van logging {} {}", null, null);
         LOGGER.info("Total cost of employee: {} = {}.", employee1, employee1.calculateTotalIncentiveCost());
