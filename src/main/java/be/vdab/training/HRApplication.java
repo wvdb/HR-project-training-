@@ -20,7 +20,19 @@ public class HRApplication {
     public static int numberOfDirectors = 0;
 
     public static void main(String[] args) throws MyCustomizedException {
-        HRApplication.myCompany_99();
+        HRApplication.myCompany_98();
+//        HRApplication.myCompany_99();
+    }
+
+    private static void myCompany_98() {
+        Employee employee1 = new Employee(null, "employee 1", 49, Worker.Gender.MALE, Date.from(Instant.now()));
+        Manager manager = new Manager("vrouw van employee 1");
+
+        PairWorker<Employee, Employee> pairWorker1 = new PairWorker<>(employee1, employee1);
+        pairWorker1.pairProgramming();
+
+        PairWorker<Employee, Manager> pairWorker2 = new PairWorker<>(employee1, manager);
+        pairWorker2.pairProgramming();
     }
 
     private static void myCompany_99() {
@@ -34,7 +46,8 @@ public class HRApplication {
 
         employee1.withHireDate(DateUtility.convertLocalDateToDate(LocalDate.of(2014, 3, 1)));
         employee1.withCountry(Country.BELGIUM);
-        employee1.withSocialSecurityNumber("67.11.02-367.87");
+        // withManager first (manager returns an employee, worker returns a worker) !!!
+        employee1.withManager(null).withSocialSecurityNumber("67.11.02-367.87");
 
         Employee.Address address1 = employee1.new Address("street 1", "house no 1", "zip 1", "commune 1");
         Employee.Address address2 = employee1.new Address("street 2", "house no 2", "2650", "Edegem");
@@ -129,15 +142,15 @@ public class HRApplication {
                 Employee employee = (Employee) worker;
                 // option 1
 //                if (isEligibleForHRSystem(employee.getRemunerations(), Employee.MAX_NUMBER_OF_REMUNERATIONS_FOR_EMPLOYEE)) {
-//                    if (employee.isValid()) {
+//                    if (employee.validateEmployee()) {
 //                        numberOfEmployees++;
 //                    }
 //                }
 
-                // option 2
-                if (employee.isValid()) {
-                    numberOfEmployees++;
-                }
+//                // option 2
+//                if (employee.validateEmployee(errorMessage)) {
+//                    numberOfEmployees++;
+//                }
             } else if (worker instanceof  Manager) {
                 Manager manager = (Manager) worker;
                 if (isEligibleForHRSystem(manager.getRemunerations(), Manager.MAX_NUMBER_OF_REMUNERATIONS_FOR_MANAGER)) {

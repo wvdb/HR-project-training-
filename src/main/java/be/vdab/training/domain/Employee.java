@@ -8,7 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by wvdbrand on 24/08/2017.
+ * This class contains the properties and the methods of an Employee. It contains
+ * an validateEmployee method. <b>This method should be invoked first before persisting
+ * the employee.</b>
+ *
+ * @author Wim Van den Brande
+ * @version 0.1
+ * @see Worker
  */
 public class Employee extends Worker {
     public final static int MAX_NUMBER_OF_REMUNERATIONS_FOR_EMPLOYEE = 2;
@@ -112,7 +118,18 @@ public class Employee extends Worker {
         return totalIncentiveCost;
     }
 
-    public boolean isValid() {
+//    public List<Exception> validateEmployee() {
+    public String[] validateEmployee() {
+        String[] errorMessages = new String[10];
+
+//        int index=0;
+//
+//        errorMessages[index++] = getBirthDate() == null ? "birthdate is empty" : null;
+//        errorMessages[index++] = getHireDate() == null ? "hiredate is empty" : null;
+//        errorMessages[index++] = getFirstName() == null ? "firstname is empty" : null;
+//        errorMessages[index++] = getMiddleName() == null ? "middlename is empty" : null;
+//        errorMessages[index++] = getLastName() == null ? "lastname is empty" : null;
+//
         // verify required properties
         if (getBirthDate() == null ||
                 getHireDate() == null ||
@@ -121,15 +138,18 @@ public class Employee extends Worker {
                 getLastName() == null ||
                 getSocialSecurityNumber() == null ||
                 getCountry() == null ) {
-            return false;
+            errorMessages[0] = "a property hasn't been set";
+            return errorMessages;
         }
         if (!isHireDateAfterBirthDate()) {
-            return false;
+            errorMessages[0] = "hire date is not after birth date";
+            return errorMessages;
         }
         if (!isBirthDatePartOfSocialSecurityNumber()) {
-            return false;
+            errorMessages[0] = "birth date does not match SSN";
+            return errorMessages;
         }
-        return true;
+        return errorMessages;
     }
 
     private boolean isHireDateAfterBirthDate() {
@@ -157,5 +177,11 @@ public class Employee extends Worker {
         }
         return true;
     }
+
+    public Employee withManager(Manager manager) {
+        this.manager = manager;
+        return this;
+    }
+
 
 }

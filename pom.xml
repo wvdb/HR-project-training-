@@ -7,6 +7,7 @@
     <groupId>be.vdab.training</groupId>
     <artifactId>HRSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +16,19 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <file.name>HRSystem</file.name>
+        <log.level>DEBUG</log.level>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>PROD</id>
+            <properties>
+                <log.level>WARN</log.level>
+                <maven.compiler.debug>false</maven.compiler.debug>
+                <maven.compiler.optimize>true</maven.compiler.optimize>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!--<dependency>-->
@@ -37,6 +50,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <finalName>
             ${file.name}
         </finalName>

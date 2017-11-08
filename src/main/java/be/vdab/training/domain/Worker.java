@@ -13,11 +13,9 @@ import java.util.Set;
  * Created by wvdbrand on 24/08/2017.
  */
 public abstract class Worker extends DatabaseEntity implements Workable {
-    static public boolean isEligibleForRemuneration = Boolean.TRUE;
-
-    private String firstName;
-    private String middleName;
-    private String lastName;
+    protected String firstName;
+    protected String middleName;
+    protected String lastName;
 
     private Gender gender;
     private Date hireDate;
@@ -230,6 +228,7 @@ public abstract class Worker extends DatabaseEntity implements Workable {
     public class Address extends DatabaseEntity {
         public static final int BELGIUM_ZIP_LENGTH = 4;
         public static final int NETHERLANDS_ZIP_LENGTH = 6;
+
         private String street;
         private String houseNo;
         private String zip;

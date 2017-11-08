@@ -16,6 +16,10 @@ public class Manager extends Worker {
         super(name, gender, hireDate);
     }
 
+    public Manager(String firstName) {
+        super.firstName = firstName;
+    }
+
     public Set<Employee> getSubordinates() {
         return subordinates;
     }
