@@ -32,14 +32,13 @@ public final class DateUtility {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
-    public final static LocalDate convertDateToLocalDate(Date date) {
-        return new java.sql.Date(date.getTime()).toLocalDate();
-//        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
     public final static long convertLocalDateToEpoch(LocalDate localDate) {
         ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
         return localDate.atStartOfDay(zoneId).toEpochSecond();
+    }
+
+    public final static LocalDate convertDateToLocalDate(Date date) {
+        return new java.sql.Date(date.getTime()).toLocalDate();
     }
 
     public final static Date convertLocalDateToDate(LocalDate localDate) {

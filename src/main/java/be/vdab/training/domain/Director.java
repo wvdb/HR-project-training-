@@ -9,7 +9,7 @@ import java.util.Set;
 public class Director extends Worker {
     public final static int MAX_NUMBER_OF_REMUNERATIONS_FOR_DIRECTOR = 4;
 
-    public Director(String name, Integer age, Gender gender, Date hireDate) {
+    public Director(String name, Gender gender, Date hireDate) {
         super(name, gender, hireDate);
     }
 

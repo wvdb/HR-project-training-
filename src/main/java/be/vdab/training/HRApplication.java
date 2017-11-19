@@ -7,7 +7,13 @@ import be.vdab.training.utilities.DateUtility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.*;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
@@ -15,13 +21,72 @@ import java.util.*;
 public class HRApplication {
     private static final Logger LOGGER = LogManager.getLogger(HRApplication.class);
 
+    private static final String CONTACT_XML = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact.xml";
+
     public static int numberOfEmployees = 0;
     public static int numberOfManagers = 0;
     public static int numberOfDirectors = 0;
 
-    public static void main(String[] args) throws MyCustomizedException {
-        HRApplication.myCompany_98();
+    public static void main(String[] args) throws MyCustomizedException, IOException, JDOMException {
+//        HRApplication.jDOM_opdracht2();
+        HRApplication.jDOM_opdracht3();
+//        HRApplication.myCompany_98();
 //        HRApplication.myCompany_99();
+    }
+
+    private static void jDOM_opdracht2() throws IOException {
+        Document document = new Document();
+        DocType dtd = new DocType("contact", "Contact.dtd");
+        document.setDocType(dtd);
+
+        Element contact = new Element("contact");
+        document.setRootElement(contact);
+
+        Element name = new Element("name");
+        name.addContent("van den brande");
+
+        Element address = new Element("address");
+        address.addContent("Edegem");
+
+        Element country = new Element("country");
+        country.addContent("Belgium");
+
+        Element phone1 = new Element("phone");
+        Attribute attribute1 = new Attribute("type", "private_mobile");
+        phone1.setAttribute(attribute1);
+        phone1.addContent("+32485717182");
+
+        Element phone2 = new Element("phone");
+        Attribute attribute2 = new Attribute("type", "private_fixed");
+        phone2.setAttribute(attribute2);
+        phone2.addContent("+323485123456");
+
+        Element notes = new Element("notes");
+        notes.addContent("Java Software Engineer & Seasoned");
+
+        contact.addContent(name);
+        contact.addContent(address);
+        contact.addContent(country);
+        contact.addContent(phone1);
+        contact.addContent(phone2);
+        contact.addContent(notes);
+
+        printDocument(document);
+    }
+
+    private static void jDOM_opdracht3() throws IOException, JDOMException {
+        SAXBuilder builder = new SAXBuilder();
+        File file  = new File (CONTACT_XML);
+        
+        Document document = builder.build(file);
+
+        printDocument(document);
+    }
+
+    private static void printDocument(Document document) throws IOException {
+        XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
+
+        xmlOutputter.output(document, System.out);
     }
 
     private static void myCompany_98() {
@@ -142,13 +207,13 @@ public class HRApplication {
                 Employee employee = (Employee) worker;
                 // option 1
 //                if (isEligibleForHRSystem(employee.getRemunerations(), Employee.MAX_NUMBER_OF_REMUNERATIONS_FOR_EMPLOYEE)) {
-//                    if (employee.validateEmployee()) {
+//                    if (employee.validateWorkerWithArray()) {
 //                        numberOfEmployees++;
 //                    }
 //                }
 
 //                // option 2
-//                if (employee.validateEmployee(errorMessage)) {
+//                if (employee.validateWorkerWithArray(errorMessage)) {
 //                    numberOfEmployees++;
 //                }
             } else if (worker instanceof  Manager) {

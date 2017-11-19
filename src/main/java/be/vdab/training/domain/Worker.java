@@ -5,9 +5,7 @@ import be.vdab.training.utilities.DateUtility;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by wvdbrand on 24/08/2017.
@@ -81,9 +79,9 @@ public abstract class Worker extends DatabaseEntity implements Workable {
     }
 
     public String getFirstName() {
-        if (firstName == null ) {
-            firstName = "";
-        }
+//        if (firstName == null ) {
+//            firstName = "";
+//        }
         return firstName;
     }
 
@@ -200,6 +198,105 @@ public abstract class Worker extends DatabaseEntity implements Workable {
     public Worker withSocialSecurityNumber(String socialSecurityNumber) {
         this.setSocialSecurityNumber(socialSecurityNumber);
         return this;
+    }
+
+    public String[] validateWorkerWithArray() {
+        String[] errorMessages = new String[10];
+
+//        int index=0;
+////
+//        errorMessages[index++] = getBirthDate() == null ? "birthdate is empty" : null;
+//        errorMessages[index++] = getHireDate() == null ? "hiredate is empty" : null;
+//        errorMessages[index++] = getFirstName() == null ? "firstname is empty" : null;
+//        errorMessages[index++] = getMiddleName() == null ? "middlename is empty" : null;
+//        errorMessages[index++] = getLastName() == null ? "lastname is empty" : null;
+//
+        // verify required properties
+        if (getBirthDate() == null ||
+                getHireDate() == null ||
+                getFirstName() == null ||
+                getMiddleName() == null ||
+                getLastName() == null ||
+                getSocialSecurityNumber() == null ||
+                getCountry() == null ) {
+            errorMessages[0] = "a property hasn't been set";
+            return errorMessages;
+        }
+
+        if (!isHireDateAfterBirthDate()) {
+            errorMessages[0] = "hire date is not after birth date";
+            return errorMessages;
+        }
+
+        if (!isBirthDatePartOfSocialSecurityNumber()) {
+            errorMessages[0] = "birth date does not match SSN";
+            return errorMessages;
+        }
+
+        return errorMessages;
+    }
+
+    public List<Exception> validateWorkerWithListOfExceptions() {
+        List<Exception> exceptions = new ArrayList<>();
+//        List<Exception> exceptions = null;
+
+        if (getBirthDate() == null) {
+            exceptions.add(new IllegalArgumentException("birthdate is empty"));
+        }
+        if (getHireDate() == null) {
+            exceptions.add(new IllegalArgumentException("hiredate is empty"));
+        }
+        if (getFirstName() == null) {
+            exceptions.add(new IllegalArgumentException("firstname is empty"));
+        }
+        if (getMiddleName() == null) {
+            exceptions.add(new IllegalArgumentException("middlename is empty"));
+        }
+        if (getLastName() == null) {
+            exceptions.add(new IllegalArgumentException("lastname is empty"));
+        }
+
+        if (exceptions.size() > 0 ) {
+            return exceptions;
+        }
+
+        if (!isHireDateAfterBirthDate()) {
+            exceptions.add(new IllegalArgumentException("hiredate is not after birthdate"));
+            return exceptions;
+        }
+        if (!isBirthDatePartOfSocialSecurityNumber()) {
+            exceptions.add(new IllegalArgumentException("birth date does not match SSN"));
+            return exceptions;
+        }
+
+        return exceptions;
+    }
+
+
+    private boolean isHireDateAfterBirthDate() {
+        return getHireDate().after(getBirthDate());
+    }
+
+    private boolean isBirthDatePartOfSocialSecurityNumber() {
+        // TODO : to use Pattern class
+        if (getSocialSecurityNumber().length() <= 7) {
+            return false;
+        }
+        String yearOfSocialSecurityNumber = getSocialSecurityNumber().substring(0,2);
+        String monthOfSocialSecurityNumber = getSocialSecurityNumber().substring(3,5);
+        String dayOfSocialSecurityNumber = getSocialSecurityNumber().substring(6,8);
+        // TODO : to disagree with recommended simplification of Intellij
+        // TODO : to fix for year as of 2000
+        if (Integer.parseInt(yearOfSocialSecurityNumber) + 1900 !=
+                DateUtility.convertDateToLocalDate(getBirthDate()).getYear() ||
+                Integer.parseInt(monthOfSocialSecurityNumber) !=
+                        DateUtility.convertDateToLocalDate(getBirthDate()).getMonth().getValue() ||
+                Integer.parseInt(dayOfSocialSecurityNumber) !=
+                        DateUtility.convertDateToLocalDate(getBirthDate()).getDayOfMonth()
+                ) {
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by admin on 24/10/2017.
@@ -45,7 +44,8 @@ public class EmployeeTest {
 
         employee.withHireDate(DateUtility.convertLocalDateToDate(LocalDate.of(2014, 3, 1))).withCountry(Country.BELGIUM).withSocialSecurityNumber("67.11.02-367.87");
 
-        assertNull("employee should be valid", employee.validateEmployee()[0]);
+//        assertNull("employee should be valid", employee.validateWorkerWithArray()[0]);
+        assertEquals("employee should be valid", 0, employee.validateWorkerWithListOfExceptions().size());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class EmployeeTest {
                 .withHireDate(DateUtility.convertLocalDateToDate(LocalDate.of(1914, 3, 1)))
                 .withCountry(Country.BELGIUM).withSocialSecurityNumber("67.11.02-367.87");
 
-        assertEquals("employee should be invalid (because of HireDate)", false, employee.validateEmployee());
+        assertEquals("employee should be invalid (because of HireDate)", false, employee.validateWorkerWithArray()[0]);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class EmployeeTest {
 
         for (String invalidSocialSecurityNumber : invalidSocialSecurityNumbers) {
             employee.setSocialSecurityNumber(invalidSocialSecurityNumber);
-            assertEquals("employee should be invalid (because of SocialSecurityNumber). Test value = " + invalidSocialSecurityNumber, false, employee.validateEmployee());
+            assertEquals("employee should be invalid (because of SocialSecurityNumber). Test value = " + invalidSocialSecurityNumber, false, employee.validateWorkerWithArray());
         }
     }
 
@@ -78,6 +78,6 @@ public class EmployeeTest {
     public void testEmployeePropertiesAreSet() {
         Employee employee = new Employee(null, "employee 1", 49, Worker.Gender.MALE, null);
 
-        assertEquals("employee should be invalid (because of missing property)", "a property hasn't been set", employee.validateEmployee()[0]);
+        assertEquals("employee should be invalid (because of missing property)", "a property hasn't been set", employee.validateWorkerWithArray()[0]);
     }
 }
