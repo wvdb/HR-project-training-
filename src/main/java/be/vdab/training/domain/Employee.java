@@ -1,9 +1,10 @@
 package be.vdab.training.domain;
 
 import be.vdab.training.enums.AddressType;
-import be.vdab.training.utilities.DateUtility;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class contains the properties and the methods of an Employee. It contains
@@ -25,6 +26,12 @@ public class Employee extends Worker {
 
     public Employee(Manager manager, String name, Integer age, Gender gender, Date hireDate) {
         super(name, gender, hireDate);
+
+        // used in combination with a unit test expecting an exception
+        if (age < 0) {
+            throw new IllegalArgumentException("age should be a positive value");
+        }
+
         this.manager = manager;
         numberOfEmployees+= 1;
         if (Gender.FEMALE == gender) {
@@ -115,8 +122,6 @@ public class Employee extends Worker {
         }
         return totalIncentiveCost;
     }
-
-
 
     public Employee withManager(Manager manager) {
         this.manager = manager;

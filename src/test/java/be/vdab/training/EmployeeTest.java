@@ -1,5 +1,6 @@
-package be.vdab.training.domain;
+package be.vdab.training;
 
+import be.vdab.training.domain.*;
 import be.vdab.training.enums.Country;
 import be.vdab.training.utilities.DateUtility;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +46,13 @@ public class EmployeeTest {
         employee.withHireDate(DateUtility.convertLocalDateToDate(LocalDate.of(2014, 3, 1))).withCountry(Country.BELGIUM).withSocialSecurityNumber("67.11.02-367.87");
 
 //        assertNull("employee should be valid", employee.validateWorkerWithArray()[0]);
-        assertEquals("employee should be valid", 0, employee.validateWorkerWithListOfExceptions().size());
+        assertEquals("employee should be valid (=> no exceptions)", 0, employee.validateWorkerWithListOfExceptions().size());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmployeeHireDateSadFlow0() {
+        new Employee(null, "employee 1", -5, Worker.Gender.MALE, Date.from(Instant.now()));
+        // TODO : should we test the message of the exception (AFAIK, we should not)???
     }
 
     @Test
@@ -57,7 +64,7 @@ public class EmployeeTest {
                 .withHireDate(DateUtility.convertLocalDateToDate(LocalDate.of(1914, 3, 1)))
                 .withCountry(Country.BELGIUM).withSocialSecurityNumber("67.11.02-367.87");
 
-        assertEquals("employee should be invalid (because of HireDate)", false, employee.validateWorkerWithArray()[0]);
+        assertEquals("employee should be invalid (because of HireDate)", 0, employee.validateWorkerWithListOfExceptions().size());
     }
 
     @Test

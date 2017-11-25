@@ -4,11 +4,11 @@ import be.vdab.training.domain.*;
 import be.vdab.training.enums.Country;
 import be.vdab.training.exceptions.MyCustomizedException;
 import be.vdab.training.utilities.DateUtility;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -22,6 +22,8 @@ public class HRApplication {
     private static final Logger LOGGER = LogManager.getLogger(HRApplication.class);
 
     private static final String CONTACT_XML = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact.xml";
+    private static final String CONTACT_XML_WITH_XSD = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd.xml";
+    private static final String CONTACT_XML_WITH_XSD2 = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd2.xml";
 
     public static int numberOfEmployees = 0;
     public static int numberOfManagers = 0;
@@ -29,14 +31,17 @@ public class HRApplication {
 
     public static void main(String[] args) throws MyCustomizedException, IOException, JDOMException {
 //        HRApplication.jDOM_opdracht2();
-        HRApplication.jDOM_opdracht3();
+//        HRApplication.jDOM_opdracht_4_en_5();
+//        HRApplication.jDOM_opdracht7A();
+        HRApplication.jDOM_opdracht7B();
 //        HRApplication.myCompany_98();
 //        HRApplication.myCompany_99();
     }
 
     private static void jDOM_opdracht2() throws IOException {
         Document document = new Document();
-        DocType dtd = new DocType("contact", "Contact.dtd");
+//        DocType dtd = new DocType("contact", "Contact.dtd");
+        DocType dtd = new DocType("contact", "xxx.dtd");
         document.setDocType(dtd);
 
         Element contact = new Element("contact");
@@ -74,18 +79,79 @@ public class HRApplication {
         printDocument(document);
     }
 
-    private static void jDOM_opdracht3() throws IOException, JDOMException {
+    private static void jDOM_opdracht_4_en_5() throws IOException, JDOMException {
         SAXBuilder builder = new SAXBuilder();
         File file  = new File (CONTACT_XML);
         
         Document document = builder.build(file);
+        printDocument(document);
+
+        Element root = document.getRootElement();
+
+        Element country = root.getChild("country");
+        Element phone = root.getChild("phone");
+
+        System.out.println("Country = " + country.getValue());
+        System.out.println("Country = " + country.getText());
+        System.out.println("Phone = " + phone.getValue() + ", type = " + phone.getAttributeValue("type"));
+    }
+
+    private static void jDOM_opdracht7A() throws IOException {
+        // example : http://www.studytrails.com/java/xml/jdom2/java-xml-jdom2-saxbuilder-xsd-validating/
+
+        Document document = new Document();
+
+        Element contact = new Element("contact");
+        Namespace sns = Namespace.getNamespace("xsi", "http://www.w3.org:2001/XMLSchema-instance");
+
+//        contact.setAttribute("schemaLocation", "file:///C:/wim/oak3 - cronos- training/cursus_data_input_output/Contact.xsd", sns);
+        contact.setAttribute("schemaLocation", "http://www.noelvaes.eu/contact Contact.xsd");
+
+        document.setRootElement(contact);
+
+        Element name = new Element("name");
+        name.addContent("van den brande");
+
+        Element address = new Element("address");
+        address.addContent("Edegem");
+
+        Element country = new Element("country");
+        country.addContent("Belgium");
+
+        Element phone1 = new Element("phone");
+        Attribute attribute1 = new Attribute("type", "private_mobile");
+        phone1.setAttribute(attribute1);
+        phone1.addContent("+32485717182");
+
+        Element phone2 = new Element("phone");
+        Attribute attribute2 = new Attribute("type", "private_fixed");
+        phone2.setAttribute(attribute2);
+        phone2.addContent("+323485123456");
+
+        Element notes = new Element("notes");
+        notes.addContent("Java Software Engineer & Seasoned");
+
+        contact.addContent(name);
+        contact.addContent(address);
+        contact.addContent(country);
+        contact.addContent(phone1);
+        contact.addContent(phone2);
+        contact.addContent(notes);
 
         printDocument(document);
     }
 
+    private static void jDOM_opdracht7B() throws IOException, JDOMException {
+        SAXBuilder builder = new SAXBuilder(XMLReaders.XSDVALIDATING);
+        Document myJdom = builder.build(new File(CONTACT_XML_WITH_XSD2));
+
+        System.out.println("XML is XSD compliant");
+
+        printDocument(myJdom);
+    }
+
     private static void printDocument(Document document) throws IOException {
         XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-
         xmlOutputter.output(document, System.out);
     }
 

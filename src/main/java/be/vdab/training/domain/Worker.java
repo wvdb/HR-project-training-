@@ -238,7 +238,6 @@ public abstract class Worker extends DatabaseEntity implements Workable {
 
     public List<Exception> validateWorkerWithListOfExceptions() {
         List<Exception> exceptions = new ArrayList<>();
-//        List<Exception> exceptions = null;
 
         if (getBirthDate() == null) {
             exceptions.add(new IllegalArgumentException("birthdate is empty"));
