@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="contact">
+      <complexType>
+         <sequence>
+            <element name="name" type="string"></element>
+            <element name="address" type="string"></element>
+            <element name="country" type="string"></element>
+			
+            <element name="phone" maxOccurs="2" minOccurs="1">
+			  <complexType>
+				<simpleContent>
+				  <extension base="string">
+					<attribute name="type">
+					  <simpleType>
+						<restriction base="string">
+						  <enumeration value="private_mobile" />
+						  <enumeration value="private_fixed" />
+						</restriction>
+					  </simpleType>
+					</attribute>
+				  </extension>
+				</simpleContent>
+			  </complexType>
+			</element>    
+
+            <element name="notes" type="string"></element>
+         </sequence>
+      </complexType>
+   </element>
+</schema>

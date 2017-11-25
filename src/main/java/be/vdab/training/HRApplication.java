@@ -22,8 +22,14 @@ public class HRApplication {
     private static final Logger LOGGER = LogManager.getLogger(HRApplication.class);
 
     private static final String CONTACT_XML = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact.xml";
-    private static final String CONTACT_XML_WITH_XSD = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd.xml";
-    private static final String CONTACT_XML_WITH_XSD2 = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd2.xml";
+    private static final String CONTACT_XML_WITH_XSD
+            = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd.xml";
+    private static final String CONTACT_XML_WITH_XSD2
+            = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd2.xml";
+    private static final String CONTACT_XML_7C
+            = "C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd_7C.xml";
+    private static final String CONTACT_XML_7D
+            = "Contact_with_xsd_7D.xml";
 
     public static int numberOfEmployees = 0;
     public static int numberOfManagers = 0;
@@ -33,7 +39,10 @@ public class HRApplication {
 //        HRApplication.jDOM_opdracht2();
 //        HRApplication.jDOM_opdracht_4_en_5();
 //        HRApplication.jDOM_opdracht7A();
-        HRApplication.jDOM_opdracht7B();
+//        HRApplication.jDOM_opdracht7B();
+//        HRApplication.jDOM_opdracht7C();
+        HRApplication hrApplication = new HRApplication();
+        hrApplication.jDOM_opdracht7D();
 //        HRApplication.myCompany_98();
 //        HRApplication.myCompany_99();
     }
@@ -145,7 +154,31 @@ public class HRApplication {
         SAXBuilder builder = new SAXBuilder(XMLReaders.XSDVALIDATING);
         Document myJdom = builder.build(new File(CONTACT_XML_WITH_XSD2));
 
-        System.out.println("XML is XSD compliant");
+        System.out.println("(jDOM_opdracht7B) Our XML is XSD compliant");
+
+        printDocument(myJdom);
+    }
+
+    private static void jDOM_opdracht7C() throws IOException, JDOMException {
+        SAXBuilder builder = new SAXBuilder(XMLReaders.XSDVALIDATING);
+        Document myJdom = builder.build(new File(CONTACT_XML_7C));
+
+        System.out.println("(jDOM_opdracht7C) Our XML is XSD compliant");
+
+        printDocument(myJdom);
+    }
+
+    private void jDOM_opdracht7D() throws IOException, JDOMException {
+        // TODO: to explain other options of XMLReaders (NONVALIDATING / DTDVALIDATING)
+        SAXBuilder builder = new SAXBuilder(XMLReaders.XSDVALIDATING);
+
+        // TODO: emphasize we are using a resource file
+        // resource files should be located in target/classes
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Document myJdom = builder.build(new File(classLoader.getResource(CONTACT_XML_7D).getFile()));
+
+        System.out.println("(jDOM_opdracht7D) Our XML is XSD compliant");
 
         printDocument(myJdom);
     }

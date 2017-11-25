@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contact 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:noNamespaceSchemaLocation="Contact.xsd"> 
+	<name>Wim Van den Brande</name> 
+	<address>Edegem</address> 
+	<country>Belgium</country> 
+	<phone type="private_mobile">+32485717182</phone> 
+	<phone type="private_fixed">+323485123456</phone> 
+	<notes>
+		Seasoned Java Software Engineer 
+	</notes>	
+</contact>
+
