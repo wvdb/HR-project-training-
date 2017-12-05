@@ -161,7 +161,7 @@ public class HRApplication {
 
     private static void jDOM_opdracht7C() throws IOException, JDOMException {
         SAXBuilder builder = new SAXBuilder(XMLReaders.XSDVALIDATING);
-        Document myJdom = builder.build(new File(CONTACT_XML_7C));
+        Document myJdom = builder.build(new File("C:\\wim\\oak3 - cronos- training\\cursus_data_input_output\\Contact_with_xsd_7C.xml"));
 
         System.out.println("(jDOM_opdracht7C) Our XML is XSD compliant");
 
@@ -176,7 +176,9 @@ public class HRApplication {
         // resource files should be located in target/classes
 
         ClassLoader classLoader = this.getClass().getClassLoader();
-        Document myJdom = builder.build(new File(classLoader.getResource(CONTACT_XML_7D).getFile()));
+        Document myJdom =
+             builder
+             .build(new File(classLoader.getResource("Contact_with_xsd_7D.xml").getFile()));
 
         System.out.println("(jDOM_opdracht7D) Our XML is XSD compliant");
 
